@@ -1,0 +1,6 @@
+[submodule "node"]
+	path = node
+	url = git://github.com/ry/node.git
+[submodule "node-amqp"]
+	path = node-amqp
+	url = git://github.com/ry/node-amqp.git
