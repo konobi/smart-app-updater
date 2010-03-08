@@ -126,7 +126,7 @@ var update_or_create = function(repository,projectsDir,gitUser,gitServer) {
     
     sys.exec(cmd, function (err, stdout, stderr) {
       if (err) {
-        sys.puts("[ERROR] Could not run command '" + cmd "'" + ": " + err);
+        sys.puts("[ERROR] Could not run command '" + cmd + "'" + ": " + err);
       } else {
         sys.puts("[INFO] Done processing smart app " + repository);
       }
