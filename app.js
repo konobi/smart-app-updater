@@ -41,7 +41,8 @@ var connectionReadyHandle = function(connection) {
   
   var exchange = connection.exchange(config.amqp.exchange, {type:'fanout'});  
   var queue = connection.queue(AGENT_NAME + '+' + hostname);
-  
+  queue.bind(exchange, config.amqp.exchange);
+
   queue.subscribe(function (message) {
     message.addListener('data', function (d) {        
       if (d) {
