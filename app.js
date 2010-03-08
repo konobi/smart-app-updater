@@ -50,10 +50,11 @@ var connectionReadyHandle = function(connection) {
         try {
           data = eval("("+d+")");
           repository = data['repository'];
+          repository = repository.replace(/\.git$/, '');
           try {            
             update_or_create(repository,config.rsp['projects_dir'],config.rsp['git_user'],config.rsp['git_server']);
           } catch(e){
-            sys.debug("[ERROR] Cant Create or Update");
+            sys.debug("[ERROR] Cant Create or Update: " + e);
           }
 
         } catch(e){
