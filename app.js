@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 // Smart Update, a Node.js AMQP broker that updates or creates a GIT repo
 // Each host will generate a new message to the 'smart-scan-fs-rec' queue

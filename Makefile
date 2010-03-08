@@ -57,6 +57,7 @@ clean_libs:
 
 install: build install_env install_node install_amqp
 	$(CP) app.js $(PREFIX)/app.js
+	$(CP) helper.js $(PREFIX)/helper.js
 	$(PERL) -pi -e 's{^#!.+$$}{#!$(PREFIX)/local/bin/node}' $(PREFIX)/app.js
 
 install_env:
