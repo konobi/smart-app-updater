@@ -6,15 +6,16 @@
 var AGENT_NAME = 'smart-app-updater';
 var VERSION = '0.01';
 
-// Path to GITOSIS.conf
-var gitosisConfig = "./gitosis.conf";
-
 var sys   = require('sys');
 var posix = require('fs'); 
+var path  = require('path');
 var path  = require('path');
 var ini   = require('ini');
 var amqp  = require('amqp');
 require('./helper');
+
+// Path to GITOSIS.conf
+var gitosisConfig = path.join(__dirname, "gitosis.conf");
 
 var currentAMQPConnection;
 var hostname;
