@@ -111,11 +111,8 @@ var setup_connection = function(prev, curr) {
 };
 
 // We want to be able to change configuration on the fly, so we may need to reconnect, etc.
-posix.realpath(gitosisConfig, function(e, resolved_path) {
-    gitosisConfig = resolved_path;
-    posix.watchFile(gitosisConfig, { persistent: true, interval: 10000 }, setup_connection);
-    setup_connection();
-});
+posix.watchFile(gitosisConfig, { persistent: true, interval: 10000 }, setup_connection);
+setup_connection();
 
 var update_or_create = function(repository,projectsDir,gitUser,gitServer) {
   projectPath = path.join(projectsDir, repository);
