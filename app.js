@@ -116,24 +116,44 @@ setup_connection();
 
 var update_or_create = function(repository,projectsDir,gitUser,gitServer) {
   projectPath = path.join(projectsDir, repository);
-  path.exists(projectPath, function (exists) {
+  path.exists(projectPath, function (err, exists) {
     if (exists) {
       process.chdir(projectPath);
-      cmd = "/opt/local/bin/git pull"; // Remote
+      
+
+      executeCmd("/opt/local/bin/git clean -d -x",function() {
+        executeCmd("/opt/local/bin/git pull ",function() {
+          executeCmd("/opt/local/bin/git submodule update --init ",function() {
+            sys.debug("Done");
+          });          
+        });
+      });
+      
       sys.puts("[INFO] Updating smart app '" + repository + "'");
+      
     } else {
       cloneUri = gitUser + "@" + gitServer + ":"+ repository;
       cmd = "/opt/local/bin/git clone " + cloneUri + " " + projectPath;
       sys.puts("[INFO] Creating smart app '" + repository + "'");
+
+      executeCmd(cmd,function() {
+        executeCmd("/opt/local/bin/git submodule update --init ",function() {
+          sys.debug("Done");
+        });
+      });      
     }  
-    
-    sys.exec(cmd, function (err, stdout, stderr) {
-      if (err) {
-        sys.puts("[ERROR] Could not run command '" + cmd + "'" + ": " + err);
-      } else {
-        sys.puts("[INFO] Done processing smart app " + repository);
-      }
-    });
+
   });
 };
 
+var executeCmd = function(cmd, callback) {
+  sys.exec(cmd, function (err, stdout, stderr) {
+    if (err) {
+      sys.puts("[ERROR] Could not run command '" + cmd + "'" + ": " + err);
+    } else {
+      sys.puts("[INFO] Done processing command " + cmd);
+    }
+    
+    if (typeof callback == 'function') callback();    
+  });  
+}
