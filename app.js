@@ -46,7 +46,7 @@ var connectionReadyHandle = function(connection) {
   queue.subscribe(function (message) {
     message.addListener('data', function (d) {        
       if (d) {
-        
+
         try {
           data = eval("("+d+")");
           repository = data['repository'];
@@ -116,15 +116,12 @@ setup_connection();
 
 var update_or_create = function(repository,projectsDir,gitUser,gitServer) {
   projectPath = path.join(projectsDir, repository);
-  path.exists(projectPath, function (err, exists) {
+  path.exists(projectPath, function (exists) {
     if (exists) {
 
-      
-    
-      executeCmd("/opt/local/bin/git --git-dir=" + projectPath + ".git --work-tree=" + projectPath + " clean -d -x",function() {
-        executeCmd("/opt/local/bin/git --git-dir=" + projectPath + ".git --work-tree=" + projectPath + " pull ",function() {
-          executeCmd("/opt/local/bin/git --git-dir=" + projectPath + ".git --work-tree=" + projectPath + " submodule update --init ",function() {
-            sys.debug("Done");
+      executeCmd("(cd "+projectPath+ "; /opt/local/bin/git clean -d -x -f )",function() {
+        executeCmd("(cd "+projectPath+ "; /opt/local/bin/git pull) ",function() {
+          executeCmd("(cd "+projectPath+ "; /opt/local/bin/git submodule update --init) ",function() {
           });          
         });
       });
@@ -137,8 +134,8 @@ var update_or_create = function(repository,projectsDir,gitUser,gitServer) {
       sys.puts("[INFO] Creating smart app '" + repository + "'");
 
       executeCmd(cmd,function() {
-        executeCmd("/opt/local/bin/git --git-dir=" + projectPath + ".git --work-tree=" + projectPath + " submodule update --init ",function() {
-          sys.debug("Done");
+        executeCmd("(cd "+projectPath+ "; /opt/local/bin/git submodule update --init) ",function() {
+        
         });
       });      
     }  
